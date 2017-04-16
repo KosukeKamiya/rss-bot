@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cronentries>
+  <cron>
+    <schedule>every 1 hours</schedule>
+    <url>/UpdateCheck</url>
+    <timezone>Asia/Tokyo</timezone>
+  </cron>
+</cronentries>
