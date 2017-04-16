@@ -37,9 +37,9 @@ public class UpdateCheck extends HttpServlet {
 		log.info("LOG UpdateCheck start");
 		
 		// get all Feeds
-		ArrayList<T_Feed> feedsList = DAO.getAllFeeds();
-		List<Entity> newfeedsList = new ArrayList<Entity>();
-		
+		List<T_Feed> feedsList = DAO.getAllFeeds();
+		List<T_Feed> newfeedsList = new ArrayList<T_Feed>();
+
 		for(T_Feed f : feedsList){
 			// purse rss
 			SyndFeedInput input = new SyndFeedInput();
@@ -55,7 +55,7 @@ public class UpdateCheck extends HttpServlet {
 			//更新を確認する
 			UpdatedEntries updatesMap = Util.checkUpdates(f, feed);
 			List<SyndEntry> updatesList = updatesMap.getEntrylist();
-
+			
 			for(SyndEntry entry : updatesList){
 				//更新があった場合、LINEで通知する（TODO: 別Methodに切り出す）
 				LINE_Message message = LINE_Message.createButtonsTemplateMessageObject(feed.getTitle(), entry.getTitle(), entry.getLink());
@@ -64,7 +64,6 @@ public class UpdateCheck extends HttpServlet {
 				Gson gson = new GsonBuilder().disableHtmlEscaping().create();
 				
 				String body = gson.toJson(push, LINE_Push.class);
-				log.info("LOG body: "+body);
 				
 				Map<String, String> head = new HashMap<String, String>();
 				String channelId = DAO.getChannelIdByUserid(f.getUserId());
@@ -72,21 +71,13 @@ public class UpdateCheck extends HttpServlet {
 				head.put("Content-Type", "application/json;charser=UTF-8");
 				head.put("Content-length", Integer.toString(body.getBytes("UTF-8").length));
 
-				log.warning("LOG RequestHeader:" + head.toString());
-				log.warning("LOG RequestBody:" + body);
-
 				String result = APICall.APICallByPost("https://api.line.me/"
 					+ Constants.URL_PUSH, body, head);
-
-				log.warning("LOG: result:" + result);
 			}
 			
 			if(updatesList.size() > 0){
-				Entity e = new Entity(f.getKey());
-				e.setProperty("lastmodified", updatesMap.getLastmodified());
-				e.setProperty("userId", f.getUserId());
-				e.setProperty("URL", f.getUrl());
-				newfeedsList.add(e);
+				T_Feed newfeed = new T_Feed(f.getKey(), f.getUserId(), f.getUrl(), updatesMap.getLastmodified());
+				newfeedsList.add(newfeed);
 			}
 		}
 

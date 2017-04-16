@@ -18,6 +18,7 @@ import com.google.appengine.api.datastore.Query.FilterPredicate;
 import com.google.appengine.api.datastore.Key;
 import com.kosuke.rssbot.model.*;
 
+
 public final class DAO {
 	private static final Logger log = Logger.getLogger(DAO.class.getName());
 	
@@ -53,7 +54,6 @@ public final class DAO {
 			String secret  = (String)entity.getProperty("secret");
 			String token   = (String)entity.getProperty("token");
 			
-			log.info("LOG token get result: " + entity.getKind() + " - " + entity.getProperty("channel"));
 			c = new M_Channel(channel, secret, token);
 			break;
 		}
@@ -69,8 +69,6 @@ public final class DAO {
 		
 		for (Entity entity : preparedQuery_channel.asIterable()) {
 			String channel  = (String)entity.getProperty("channel");
-			
-			log.info("LOG token get result: " + entity.getKind() + " - " + entity.getProperty("channel"));
 			return channel;
 		}
 		return "";
@@ -118,8 +116,21 @@ public final class DAO {
 	}
 	
 	// update Feeds
-	public static void updateFeeds(List<Entity> feedList){
+	public static void updateDatastore(List<Entity> feedList){
 		DatastoreService datastoreService = DatastoreServiceFactory.getDatastoreService();
 		datastoreService.put(feedList);
+	}
+
+	public static void updateFeeds(List<T_Feed> updatesList){
+		List<Entity> newfeedsList = new ArrayList<Entity>();
+		
+		for(T_Feed feed: updatesList){
+			Entity e = new Entity(feed.getKey());
+			e.setProperty("lastmodified", feed.getLastmodified());
+			e.setProperty("userId", feed.getUserId());
+			e.setProperty("URL", feed.getUrl());
+			newfeedsList.add(e);
+		}
+		updateDatastore(newfeedsList);
 	}
 }

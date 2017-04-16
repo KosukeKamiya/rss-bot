@@ -6,8 +6,13 @@ import java.util.List;
 import com.rometools.rome.feed.synd.SyndEntry;
 
 public class UpdatedEntries {
-	private Date lastmodified;
 	private List<SyndEntry> entrylist;
+	private Date lastmodified;
+	
+	public UpdatedEntries(List<SyndEntry> entrylist, Date lastmodified){
+		this.entrylist = entrylist;
+		this.lastmodified = lastmodified;
+	}
 
 	public Date getLastmodified() {
 		return lastmodified;
