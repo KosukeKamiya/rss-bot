@@ -60,6 +60,22 @@ public final class DAO {
 		return c;
 	}
 
+	// Get 1 channelId by userId
+	public static String getChannelIdByUserid(String userId){
+		DatastoreService datastoreService = DatastoreServiceFactory.getDatastoreService();
+		Filter filter = new FilterPredicate("userId", FilterOperator.EQUAL, userId);
+		Query query_token = new Query("M_User").setFilter(filter);
+		PreparedQuery preparedQuery_channel = datastoreService.prepare(query_token);
+		
+		for (Entity entity : preparedQuery_channel.asIterable()) {
+			String channel  = (String)entity.getProperty("channel");
+			
+			log.info("LOG token get result: " + entity.getKind() + " - " + entity.getProperty("channel"));
+			return channel;
+		}
+		return "";
+	}
+
 	// get all Feeds
 	public static ArrayList<T_Feed> getAllFeeds(){
 		DatastoreService datastoreService = DatastoreServiceFactory.getDatastoreService();
