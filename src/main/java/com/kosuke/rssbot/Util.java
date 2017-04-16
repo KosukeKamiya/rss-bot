@@ -2,9 +2,7 @@ package com.kosuke.rssbot;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.logging.Logger;
 
 import com.kosuke.rssbot.model.T_Feed;
 import com.kosuke.rssbot.model.UpdatedEntries;
