@@ -1,4 +1,4 @@
-package com.kosuke.rssbot;
+package com.kosuke.rssbot.common;
 
 import java.io.BufferedReader;
 import java.io.IOException;

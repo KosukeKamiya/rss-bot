@@ -3,7 +3,7 @@ package com.kosuke.rssbot.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.kosuke.rssbot.Constants;
+import com.kosuke.rssbot.common.Constants;
 
 public class LINE_Message {
 	String type;

@@ -16,9 +16,9 @@ import org.apache.commons.codec.binary.Base64;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.kosuke.rssbot.APICall;
-import com.kosuke.rssbot.Constants;
-import com.kosuke.rssbot.DAO;
+import com.kosuke.rssbot.common.APICall;
+import com.kosuke.rssbot.common.Constants;
+import com.kosuke.rssbot.common.DAO;
 import com.kosuke.rssbot.model.LINE_Message;
 import com.kosuke.rssbot.model.LINE_Reply;
 import com.kosuke.rssbot.model.LINE_Webhook;

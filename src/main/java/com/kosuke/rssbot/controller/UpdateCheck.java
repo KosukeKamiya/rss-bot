@@ -11,13 +11,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.google.appengine.api.datastore.Entity;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.kosuke.rssbot.APICall;
-import com.kosuke.rssbot.Constants;
-import com.kosuke.rssbot.DAO;
-import com.kosuke.rssbot.Util;
+import com.kosuke.rssbot.common.APICall;
+import com.kosuke.rssbot.common.Constants;
+import com.kosuke.rssbot.common.DAO;
+import com.kosuke.rssbot.common.Util;
 import com.kosuke.rssbot.model.LINE_Message;
 import com.kosuke.rssbot.model.LINE_Push;
 import com.kosuke.rssbot.model.T_Feed;
