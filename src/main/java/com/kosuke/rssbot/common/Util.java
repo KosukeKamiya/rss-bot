@@ -1,8 +1,16 @@
 package com.kosuke.rssbot.common;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.kosuke.rssbot.model.LINE_Message;
+import com.kosuke.rssbot.model.LINE_Push;
 import com.kosuke.rssbot.model.T_Feed;
 import com.kosuke.rssbot.model.UpdatedEntries;
 import com.rometools.rome.feed.synd.SyndEntry;
@@ -37,5 +45,23 @@ public final class Util {
 			}
 		}
 		return (new UpdatedEntries(entrylist, lastmodified));
+	}
+	
+	public static void sendUpdateNoticeByLine(String to, String FeedTitle, String entryTitle, String linkUrl)throws IOException{
+		LINE_Message message = LINE_Message.createButtonsTemplateMessageObject(FeedTitle, entryTitle, linkUrl);
+		LINE_Push push = new LINE_Push(to);
+		push.messages.add(message);
+		Gson gson = new GsonBuilder().disableHtmlEscaping().create();
+		
+		String body = gson.toJson(push, LINE_Push.class);
+		
+		Map<String, String> head = new HashMap<String, String>();
+
+		String channelId = DAO.getChannelIdByUserid(to);
+		head.put("Authorization", "Bearer " + DAO.getChannelById(channelId).getToken());
+		head.put("Content-Type", "application/json;charser=UTF-8");
+		head.put("Content-length", Integer.toString(body.getBytes("UTF-8").length));
+
+		APICall.APICallByPost("https://api.line.me/" + Constants.URL_PUSH, body, head);
 	}
 }
