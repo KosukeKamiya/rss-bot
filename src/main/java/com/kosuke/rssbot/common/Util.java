@@ -52,13 +52,14 @@ public final class Util {
 		LINE_Push push = new LINE_Push(to);
 		push.messages.add(message);
 		Gson gson = new GsonBuilder().disableHtmlEscaping().create();
+		DatastoreDAO dao = new DatastoreDAO();
 		
 		String body = gson.toJson(push, LINE_Push.class);
 		
 		Map<String, String> head = new HashMap<String, String>();
 
-		String channelId = DAO.getChannelIdByUserid(to);
-		head.put("Authorization", "Bearer " + DAO.getChannelById(channelId).getToken());
+		String channelId = dao.getChannelIdByUserid(to);
+		head.put("Authorization", "Bearer " + dao.getChannelById(channelId).getToken());
 		head.put("Content-Type", "application/json;charser=UTF-8");
 		head.put("Content-length", Integer.toString(body.getBytes("UTF-8").length));
 

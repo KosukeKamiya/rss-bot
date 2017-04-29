@@ -18,7 +18,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.kosuke.rssbot.common.APICall;
 import com.kosuke.rssbot.common.Constants;
-import com.kosuke.rssbot.common.DAO;
+import com.kosuke.rssbot.common.DatastoreDAO;
 import com.kosuke.rssbot.model.LINE_Message;
 import com.kosuke.rssbot.model.LINE_Reply;
 import com.kosuke.rssbot.model.LINE_Webhook;
@@ -52,7 +52,8 @@ public class events extends HttpServlet {
 		//Gson gson = new Gson();
 		Gson gson = new GsonBuilder().disableHtmlEscaping().create();
 		LINE_Webhook webhook = gson.fromJson(httpRequestBody, LINE_Webhook.class);
-
+		DatastoreDAO dao = new DatastoreDAO();
+		
 		for (LINE_Webhook.Event event : webhook.events) {
 			// Switch by event type.
 			switch (event.type) {
@@ -78,7 +79,7 @@ public class events extends HttpServlet {
 
 							String body = gson.toJson(reply, LINE_Reply.class);
 
-							head.put("Authorization", "Bearer " + DAO.getChannelById(account).getToken());
+							head.put("Authorization", "Bearer " + dao.getChannelById(account).getToken());
 							head.put("Content-Type", "application/json;charser=UTF-8");
 							head.put("Content-length", Integer.toString(body.getBytes("UTF-8").length));
 
@@ -146,8 +147,9 @@ public class events extends HttpServlet {
 
 	private Boolean verifiSignature(HttpServletRequest req, String httpRequestBody, String account) {
 		Logger log = Logger.getLogger(events.class.getName());
+		DatastoreDAO dao = new DatastoreDAO();
 		
-		String channelSecret = DAO.getChannelById(account).getSecret();
+		String channelSecret = dao.getChannelById(account).getSecret();
 		try {
 			SecretKeySpec key = new SecretKeySpec(channelSecret.getBytes(), "HmacSHA256");
 			Mac mac = Mac.getInstance("HmacSHA256");

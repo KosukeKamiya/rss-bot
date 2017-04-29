@@ -19,12 +19,17 @@ import com.google.appengine.api.datastore.Key;
 import com.kosuke.rssbot.model.*;
 
 
-public final class DAO {
-	private static final Logger log = Logger.getLogger(DAO.class.getName());
+public class DatastoreDAO {
+	private final Logger log;
+	private final DatastoreService datastoreService;
+	
+	public DatastoreDAO() {
+		log = Logger.getLogger(this.getClass().getName());
+		datastoreService = DatastoreServiceFactory.getDatastoreService();
+	}
 	
 	// Get all channels
-	public static Map<String, M_Channel> getAllChannel(){
-		DatastoreService datastoreService = DatastoreServiceFactory.getDatastoreService();
+	public Map<String, M_Channel> getAllChannel(){
 		Query query_channel = new Query("M_Channel");
 		PreparedQuery preparedQuery_channel = datastoreService.prepare(query_channel);
 
@@ -43,8 +48,7 @@ public final class DAO {
 	}
 	
 	// Get 1 channel by ChannelId
-	public static M_Channel getChannelById(String channel){
-		DatastoreService datastoreService = DatastoreServiceFactory.getDatastoreService();
+	public M_Channel getChannelById(String channel){
 		Filter filter = new FilterPredicate("channel", FilterOperator.EQUAL, channel);
 		Query query_token = new Query("M_Channel").setFilter(filter);
 		PreparedQuery preparedQuery_channel = datastoreService.prepare(query_token);
@@ -61,8 +65,7 @@ public final class DAO {
 	}
 
 	// Get 1 channelId by userId
-	public static String getChannelIdByUserid(String userId){
-		DatastoreService datastoreService = DatastoreServiceFactory.getDatastoreService();
+	public String getChannelIdByUserid(String userId){
 		Filter filter = new FilterPredicate("userId", FilterOperator.EQUAL, userId);
 		Query query_token = new Query("M_User").setFilter(filter);
 		PreparedQuery preparedQuery_channel = datastoreService.prepare(query_token);
@@ -75,8 +78,7 @@ public final class DAO {
 	}
 
 	// get all Feeds
-	public static ArrayList<T_Feed> getAllFeeds(){
-		DatastoreService datastoreService = DatastoreServiceFactory.getDatastoreService();
+	public ArrayList<T_Feed> getAllFeeds(){
 		Query query_token = new Query("T_Feed");
 		PreparedQuery preparedQuery_channel = datastoreService.prepare(query_token);
 		
@@ -95,8 +97,7 @@ public final class DAO {
 	}
 
 	// get Feeds by userId
-	public static ArrayList<T_Feed> getFeedsBuUserId(String userId){
-		DatastoreService datastoreService = DatastoreServiceFactory.getDatastoreService();
+	public ArrayList<T_Feed> getFeedsBuUserId(String userId){
 		Filter filter = new FilterPredicate("userId", FilterOperator.EQUAL, userId);
 		Query query_token = new Query("T_Feed").setFilter(filter);
 		PreparedQuery preparedQuery_channel = datastoreService.prepare(query_token);
@@ -116,12 +117,11 @@ public final class DAO {
 	}
 	
 	// update Feeds
-	public static void updateDatastore(List<Entity> feedList){
-		DatastoreService datastoreService = DatastoreServiceFactory.getDatastoreService();
+	public void updateDatastore(List<Entity> feedList){
 		datastoreService.put(feedList);
 	}
 
-	public static void updateFeeds(List<T_Feed> updatesList){
+	public void updateFeeds(List<T_Feed> updatesList){
 		List<Entity> newfeedsList = new ArrayList<Entity>();
 		
 		for(T_Feed feed: updatesList){

@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.kosuke.rssbot.common.DAO;
+import com.kosuke.rssbot.common.DatastoreDAO;
 import com.kosuke.rssbot.common.Util;
 import com.kosuke.rssbot.model.T_Feed;
 import com.kosuke.rssbot.model.UpdatedEntries;
@@ -26,9 +26,9 @@ public class UpdateCheck extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
 		log.info("LOG UpdateCheck start");
-		
+		DatastoreDAO dao = new DatastoreDAO();
 		// get all Feeds
-		List<T_Feed> feedsList = DAO.getAllFeeds();
+		List<T_Feed> feedsList = dao.getAllFeeds();
 		List<T_Feed> newfeedsList = new ArrayList<T_Feed>();
 
 		for(T_Feed f : feedsList){
@@ -61,7 +61,7 @@ public class UpdateCheck extends HttpServlet {
 		//更新があった場合、データストアのlastmodifiedを更新する
 		if(newfeedsList.size() >0){
 			log.info("LOG attempt to update. Size: " + newfeedsList.size());
-			DAO.updateFeeds(newfeedsList);
+			dao.updateFeeds(newfeedsList);
 		}
 
 	}
