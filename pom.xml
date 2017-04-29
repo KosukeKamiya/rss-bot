@@ -20,8 +20,10 @@ limitations under the License.
   <packaging>war</packaging>
   <version>0.1.0-SNAPSHOT</version>
 
+  <!-- Modify by Kosuke -->
   <groupId>com.kosuke.rssbot</groupId>
   <artifactId>rss-bot</artifactId>
+  <!-- Modify end -->
 
   <properties>
     <appengine.version>1.9.49</appengine.version>
@@ -105,6 +107,7 @@ limitations under the License.
       <scope>test</scope>
     </dependency>
     
+    <!-- Add by Kosuke -->
     <!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
     <dependency>
         <groupId>com.google.code.gson</groupId>
@@ -132,7 +135,7 @@ limitations under the License.
         <artifactId>slf4j-api</artifactId>
         <version>1.7.16</version>
     </dependency>
-
+  <!-- Add end -->
   </dependencies>
 
   <build>
