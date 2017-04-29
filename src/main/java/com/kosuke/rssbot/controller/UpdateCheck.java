@@ -48,8 +48,10 @@ public class UpdateCheck extends HttpServlet {
 			List<SyndEntry> updatesList = updatesMap.getEntrylist();
 			
 			for(SyndEntry entry : updatesList){
-				//更新があった場合、LINEで通知する（TODO: 別Methodに切り出す）
-				Util.sendUpdateNoticeByLine(f.getUserId(), feed.getTitle(), entry.getTitle(), entry.getLink());
+				//更新があった場合、LINEで通知する
+				String channelId = dao.getChannelIdByUserid(f.getUserId());
+				String accessToken = dao.getChannelById(channelId).getToken();
+				Util.sendUpdateNoticeByLine(f.getUserId(), feed.getTitle(), entry.getTitle(), entry.getLink(), accessToken);
 			}
 			
 			if(updatesList.size() > 0){
