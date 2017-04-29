@@ -42,6 +42,8 @@ public final class Util {
 				if(entryUpdateDate.getTime() > lastmodified.getTime()){
 					lastmodified = entryUpdateDate;
 				}
+			}else{
+				break;
 			}
 		}
 		return (new UpdatedEntries(entrylist, lastmodified));
