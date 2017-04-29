@@ -1,8 +1,12 @@
 package com.kosuke.rssbot.model;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import com.google.appengine.api.datastore.Key;
+import com.rometools.rome.feed.synd.SyndEntry;
+import com.rometools.rome.feed.synd.SyndFeed;
 
 public class T_Feed {
 	private Key key;
@@ -31,6 +35,36 @@ public class T_Feed {
 
 	public Date getLastmodified(){
 		return this.lastmodified;
+	}
+	
+	public UpdatedEntries checkUpdates(SyndFeed feed){
+		List<SyndEntry> entrylist = new ArrayList<SyndEntry>();
+		Date lastmodified = this.getLastmodified();
+		
+		for(SyndEntry entry : feed.getEntries()){
+			Date entryUpdateDate;
+
+			// Can retrieve updatedDate (Atom 1.0)
+			if(entry.getUpdatedDate() != null) {
+				entryUpdateDate = entry.getUpdatedDate();
+			}
+			// Can't retrieve updatedDate
+			else {
+				entryUpdateDate = entry.getPublishedDate();
+			}
+
+			if(entryUpdateDate.getTime() > this.getLastmodified().getTime()){
+				entrylist.add(entry);
+				
+				// lastmodified update to latest entryUpdateDate
+				if(entryUpdateDate.getTime() > lastmodified.getTime()){
+					lastmodified = entryUpdateDate;
+				}
+			}else{
+				break;
+			}
+		}
+		return (new UpdatedEntries(entrylist, lastmodified));
 	}
 	
 }

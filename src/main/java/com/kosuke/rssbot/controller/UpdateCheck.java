@@ -44,7 +44,8 @@ public class UpdateCheck extends HttpServlet {
 			}
 			
 			//更新を確認する
-			UpdatedEntries updatesMap = Util.checkUpdates(f, feed);
+			//UpdatedEntries updatesMap = Util.checkUpdates(f, feed);
+			UpdatedEntries updatesMap = f.checkUpdates(feed);
 			List<SyndEntry> updatesList = updatesMap.getEntrylist();
 			
 			for(SyndEntry entry : updatesList){
