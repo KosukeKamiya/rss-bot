@@ -29,7 +29,16 @@
     <servlet-name>events</servlet-name>
     <url-pattern>/events/*</url-pattern>
   </servlet-mapping>
-
+  
+  <security-constraint>
+    <web-resource-collection>
+      <web-resource-name>UpdateCheck</web-resource-name>
+      <url-pattern>/UpdateCheck</url-pattern>
+    </web-resource-collection>
+    <auth-constraint>
+        <role-name>admin</role-name>
+    </auth-constraint>
+  </security-constraint>
 
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>
