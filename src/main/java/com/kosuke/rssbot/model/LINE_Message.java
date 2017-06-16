@@ -52,7 +52,7 @@ public class LINE_Message {
 
 		message.type = "template";
 		message.template = message.new ButtonsTemplate(null, title, text, entryUrl);
-		message.altText =entryUrl;
+		message.altText =text;
 
 		return message;
 	}
