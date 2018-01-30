@@ -51,7 +51,7 @@ public final class Util {
 	
 	public static void sendUpdateNoticeByLine(String to, String FeedTitle, String entryTitle, String linkUrl, String accessToken)throws IOException{
 		//LINE_Message message = LINE_Message.createButtonsTemplateMessageObject(FeedTitle, entryTitle, linkUrl);
-		LINE_Message message = LINE_Message.createTextMessageObject("FeedTitle" + '\n' + entryTitle+ '\n' + linkUrl);
+		LINE_Message message = LINE_Message.createTextMessageObject(FeedTitle + "\n\n" + entryTitle+ "\n\n"  + linkUrl);
 		
 		LINE_Push push = new LINE_Push(to);
 		push.messages.add(message);
