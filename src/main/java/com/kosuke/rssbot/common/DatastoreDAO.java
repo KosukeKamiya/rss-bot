@@ -80,17 +80,18 @@ public class DatastoreDAO {
 	// get all Feeds
 	public ArrayList<T_Feed> getAllFeeds(){
 		Query query_token = new Query("T_Feed");
-		PreparedQuery preparedQuery_channel = datastoreService.prepare(query_token);
+		PreparedQuery preparedQuery_feed = datastoreService.prepare(query_token);
 		
 		T_Feed f = null;
 		ArrayList<T_Feed> ret = new ArrayList<T_Feed>();
-		for (Entity entity : preparedQuery_channel.asIterable()) {
+		for (Entity entity : preparedQuery_feed.asIterable()) {
 			Key    key          = entity.getKey();
 			String userId       = (String)entity.getProperty("userId");
 			String url          = (String)entity.getProperty("URL");
 			Date   lastmodified = (Date)entity.getProperty("lastmodified");
+			String target       = (String)entity.getProperty("target");
 
-			f = new T_Feed(key, userId, url, lastmodified);
+			f = new T_Feed(key, userId, url, lastmodified, target);
 			ret.add(f);
 		}
 		return ret;
@@ -100,17 +101,18 @@ public class DatastoreDAO {
 	public ArrayList<T_Feed> getFeedsBuUserId(String userId){
 		Filter filter = new FilterPredicate("userId", FilterOperator.EQUAL, userId);
 		Query query_token = new Query("T_Feed").setFilter(filter);
-		PreparedQuery preparedQuery_channel = datastoreService.prepare(query_token);
+		PreparedQuery preparedQuery_feed = datastoreService.prepare(query_token);
 		
 		T_Feed f = null;
 		ArrayList<T_Feed> ret = new ArrayList<T_Feed>();
-		for (Entity entity : preparedQuery_channel.asIterable()) {
+		for (Entity entity : preparedQuery_feed.asIterable()) {
 			Key    key          = entity.getKey();
 			String url          = (String)entity.getProperty("url");
 			Date   lastmodified = (Date)entity.getProperty("lastmodified");
+			String target       = (String)entity.getProperty("target");
 
 			log.info("LOG feed get result: " + entity.getKind() + " - " + entity.getProperty("url"));
-			f = new T_Feed(key, userId, url, lastmodified);
+			f = new T_Feed(key, userId, url, lastmodified, target);
 			ret.add(f);
 		}
 		return ret;
@@ -129,6 +131,7 @@ public class DatastoreDAO {
 			e.setProperty("lastmodified", feed.getLastmodified());
 			e.setProperty("userId", feed.getUserId());
 			e.setProperty("URL", feed.getUrl());
+			e.setProperty("target", feed.getTarget());
 			newfeedsList.add(e);
 		}
 		updateDatastore(newfeedsList);

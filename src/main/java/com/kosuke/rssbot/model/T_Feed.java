@@ -13,12 +13,14 @@ public class T_Feed {
 	private String userId;
 	private String url;
 	private Date lastmodified;
+	private String target;
 
-	public T_Feed(Key key, String userId, String url, Date lastmodified) {
+	public T_Feed(Key key, String userId, String url, Date lastmodified, String target) {
 		this.key = key;
 		this.userId = userId;
 		this.url = url;
 		this.lastmodified = lastmodified;
+		this.target = target;
 	}
 	
 	public Key getKey(){
@@ -35,6 +37,10 @@ public class T_Feed {
 
 	public Date getLastmodified(){
 		return this.lastmodified;
+	}
+	
+	public String getTarget(){
+		return this.target;
 	}
 	
 	public UpdatedEntries checkUpdates(SyndFeed feed){

@@ -67,4 +67,24 @@ public final class Util {
 
 		APICall.APICallByPost("https://api.line.me/" + Constants.URL_PUSH, body, head);
 	}
+
+	public static void sendUpdateNoticeByTwitter(String to, String FeedTitle, String entryTitle, String linkUrl, String accessToken)throws IOException{
+		//LINE_Message message = LINE_Message.createButtonsTemplateMessageObject(FeedTitle, entryTitle, linkUrl);
+		LINE_Message message = LINE_Message.createTextMessageObject(FeedTitle + "\n\n" + entryTitle+ "\n\n"  + linkUrl);
+		
+		LINE_Push push = new LINE_Push(to);
+		push.messages.add(message);
+		Gson gson = new GsonBuilder().disableHtmlEscaping().create();
+		
+		String body = gson.toJson(push, LINE_Push.class);
+		
+		Map<String, String> head = new HashMap<String, String>();
+
+		head.put("Authorization", "Bearer " + accessToken);
+		head.put("Content-Type", "application/json;charser=UTF-8");
+		head.put("Content-length", Integer.toString(body.getBytes("UTF-8").length));
+
+		APICall.APICallByPost("https://api.line.me/" + Constants.URL_PUSH, body, head);
+	}
+
 }

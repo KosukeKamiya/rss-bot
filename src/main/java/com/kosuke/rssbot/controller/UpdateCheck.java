@@ -44,19 +44,21 @@ public class UpdateCheck extends HttpServlet {
 			}
 			
 			//更新を確認する
-			//UpdatedEntries updatesMap = Util.checkUpdates(f, feed);
 			UpdatedEntries updatesMap = f.checkUpdates(feed);
 			List<SyndEntry> updatesList = updatesMap.getEntrylist();
 			
 			for(SyndEntry entry : updatesList){
-				//更新があった場合、LINEで通知する
-				String channelId = dao.getChannelIdByUserid(f.getUserId());
-				String accessToken = dao.getChannelById(channelId).getToken();
-				Util.sendUpdateNoticeByLine(f.getUserId(), feed.getTitle(), entry.getTitle(), entry.getLink(), accessToken);
+				if(f.getTarget().equals("L")){ //target=Lの場合：更新があったらLINEで通知する
+					String channelId = dao.getChannelIdByUserid(f.getUserId());
+					String accessToken = dao.getChannelById(channelId).getToken();
+					Util.sendUpdateNoticeByLine(f.getUserId(), feed.getTitle(), entry.getTitle(), entry.getLink(), accessToken);
+				}else if(f.getTarget().equals("T")){ //target=Tの場合：更新があったらTwitterにpostする
+					// TBD
+				}
 			}
 			
 			if(updatesList.size() > 0){
-				T_Feed newfeed = new T_Feed(f.getKey(), f.getUserId(), f.getUrl(), updatesMap.getLastmodified());
+				T_Feed newfeed = new T_Feed(f.getKey(), f.getUserId(), f.getUrl(), updatesMap.getLastmodified(), f.getTarget());
 				newfeedsList.add(newfeed);
 			}
 		}
