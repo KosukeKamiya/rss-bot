@@ -76,7 +76,26 @@ public class DatastoreDAO {
 		}
 		return "";
 	}
-
+	
+	// get Twitter property by accessToken
+	public M_Twitter getTwitterPropertyByToken(String token){
+		Filter filter = new FilterPredicate("token", FilterOperator.EQUAL, token);
+		Query query_token = new Query("M_Twitter").setFilter(filter);
+		PreparedQuery preparedQuery_twitter = datastoreService.prepare(query_token);
+		
+		M_Twitter t = null;
+		for (Entity entity : preparedQuery_twitter.asIterable()) {
+			String apikey         = (String)entity.getProperty("apikey");
+			String apisecretkey   = (String)entity.getProperty("apisecretkey");
+			String tokensecret    = (String)entity.getProperty("tokensecret");
+			
+			t = new M_Twitter(apikey, apisecretkey, token, tokensecret);
+			break;
+		}
+		return t;
+	}
+	
+	
 	// get all Feeds
 	public ArrayList<T_Feed> getAllFeeds(){
 		Query query_token = new Query("T_Feed");

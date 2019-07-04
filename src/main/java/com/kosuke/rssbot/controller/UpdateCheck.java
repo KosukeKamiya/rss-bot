@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.kosuke.rssbot.common.DatastoreDAO;
 import com.kosuke.rssbot.common.Util;
+import com.kosuke.rssbot.model.M_Twitter;
 import com.kosuke.rssbot.model.T_Feed;
 import com.kosuke.rssbot.model.UpdatedEntries;
 import com.rometools.rome.feed.synd.SyndEntry;
@@ -52,8 +53,14 @@ public class UpdateCheck extends HttpServlet {
 					String channelId = dao.getChannelIdByUserid(f.getUserId());
 					String accessToken = dao.getChannelById(channelId).getToken();
 					Util.sendUpdateNoticeByLine(f.getUserId(), feed.getTitle(), entry.getTitle(), entry.getLink(), accessToken);
+
 				}else if(f.getTarget().equals("T")){ //target=Tの場合：更新があったらTwitterにpostする
-					// TBD
+					// 要リファクタリング：useridのカラムにTwitterのaccesstokenが入っている
+					String accessToken = f.getUserId();
+					M_Twitter twitterProperty = dao.getTwitterPropertyByToken(accessToken);
+
+					Util.sendUpdateTwieet(f.getUserId(), feed.getTitle(), entry.getTitle(), entry.getLink(), twitterProperty);
+					
 				}
 			}
 			
