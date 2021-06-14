@@ -52,14 +52,14 @@ public class UpdateCheck extends HttpServlet {
 				if(f.getTarget().equals("L")){ //target=Lの場合：更新があったらLINEで通知する
 					String channelId = dao.getChannelIdByUserid(f.getUserId());
 					String accessToken = dao.getChannelById(channelId).getToken();
-					Util.sendUpdateNoticeByLine(f.getUserId(), feed.getTitle(), entry.getTitle(), entry.getLink(), accessToken);
+					Util.sendUpdateNoticeByLine(f.getUserId(), feed.getTitle(), entry.getTitle(), entry.getLink() + "&openExternalBrowser=1", accessToken);
 
 				}else if(f.getTarget().equals("T")){ //target=Tの場合：更新があったらTwitterにpostする
 					// 要リファクタリング：useridのカラムにTwitterのaccesstokenが入っている
 					String accessToken = f.getUserId();
 					M_Twitter twitterProperty = dao.getTwitterPropertyByToken(accessToken);
 
-					Util.sendUpdateTwieet(f.getUserId(), feed.getTitle(), entry.getTitle(), entry.getLink() + "&openExternalBrowser=1", twitterProperty);
+					Util.sendUpdateTwieet(f.getUserId(), feed.getTitle(), entry.getTitle(), entry.getLink(), twitterProperty);
 					
 				}
 			}
