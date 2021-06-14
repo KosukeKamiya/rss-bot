@@ -59,7 +59,7 @@ public class UpdateCheck extends HttpServlet {
 					String accessToken = f.getUserId();
 					M_Twitter twitterProperty = dao.getTwitterPropertyByToken(accessToken);
 
-					Util.sendUpdateTwieet(f.getUserId(), feed.getTitle(), entry.getTitle(), entry.getLink(), twitterProperty);
+					Util.sendUpdateTwieet(f.getUserId(), feed.getTitle(), entry.getTitle(), entry.getLink() + "&openExternalBrowser=1", twitterProperty);
 					
 				}
 			}
